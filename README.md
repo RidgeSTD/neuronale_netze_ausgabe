@@ -1,2 +1,5 @@
 # neuronale_netze_ausgabe
-DIe Ausgaben der Vorlesung Neurocale Netze
+
+Die Ausgaben der Vorlesung Neurocale Netze des KIT
+
+=======
