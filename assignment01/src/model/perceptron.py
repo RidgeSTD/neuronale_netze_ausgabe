@@ -34,8 +34,9 @@ class Perceptron(Classifier):
     testSet : list
     weight : list
     """
-    def __init__(self, train, valid, test, 
-                                    learningRate=0.01, epochs=50):
+
+    def __init__(self, train, valid, test,
+                 learningRate=0.01, epochs=50):
 
         self.learningRate = learningRate
         self.epochs = epochs
@@ -46,7 +47,8 @@ class Perceptron(Classifier):
 
         # Initialize the weight vector with small random values
         # around 0 and0.1
-        self.weight = np.random.rand(self.trainingSet.input.shape[1])/100
+        self.weight = np.random.rand(self.trainingSet.input.shape[1]) / 100
+        # TODO add the bias here
 
     def train(self, verbose=True):
         """Train the perceptron with the perceptron learning algorithm.
@@ -56,11 +58,21 @@ class Perceptron(Classifier):
         verbose : boolean
             Print logging messages with validation accuracy if verbose is True.
         """
-        # TODO 这里实现一个perceptron神经网络
+        train_n = self.trainingSet.input.shape[0]
+        if verbose:
+            print 'enter inters...'
         for i in range(0, self.epochs):
-
-            pass
-        pass
+            evl_result = np.array(self.evaluate(test = self.trainingSet))
+            # the following itemwise time can be also replaced from logical and, which maybe faster
+            # iter_err = np.logical_and(evl_result, self.trainingSet.label)
+            iter_err = (evl_result.astype(int) != self.trainingSet.label).astype(int)
+            correct_num = train_n - np.sum(iter_err)
+            if verbose:
+                print('iter ' + str(i) + ' finished with ' + str(correct_num) + '/' + str(train_n) + 'correctness')
+            if correct_num < train_n:
+                self.updateWeights(self.trainingSet.input, iter_err)
+        if verbose:
+            print('finish iterating!')
 
     def classify(self, testInstance):
         """Classify a single instance.
@@ -74,10 +86,7 @@ class Perceptron(Classifier):
         bool :
             True if the testInstance is recognized as a 7, False otherwise.
         """
-        # TODO Write your code to do the classification on an input image
-        for each in testInstance:
-            pass
-        pass
+        return self.fire(testInstance)
 
     def evaluate(self, test=None):
         """Evaluate a whole dataset.
@@ -94,14 +103,13 @@ class Perceptron(Classifier):
         """
         if test is None:
             test = self.testSet.input
-        # Once you can classify an instance, just use map for all of the test
-        # set.
+        # Once you can classify an instance, just use map for all of the test set.
         return list(map(self.classify, test))
 
     def updateWeights(self, input, error):
-        # TODO Write your code to update the weights of the perceptron here
-        pass
-         
+        # TODO there is for now no operation over the bias/x0 term according to the original design of Framework
+        self.weight = self.weight + np.sum(input.transpose() * error, axis=1)
+
     def fire(self, input):
         """Fire the output of the perceptron corresponding to the input """
         return Activation.sign(np.dot(np.array(input), self.weight))

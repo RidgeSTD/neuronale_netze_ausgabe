@@ -34,7 +34,7 @@ class MNISTSeven(object):
                         numValid=1000,
                         numTest=1000):
 
-        self.traiingSet = []
+        self.trainingSet = []
         self.validationSet = []
         self.testSet = []
 
