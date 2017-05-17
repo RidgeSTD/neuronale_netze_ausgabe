@@ -69,7 +69,7 @@ class Perceptron(Classifier):
             iter_err = (self.trainingSet.label - evl_result.astype(int)).astype(int)
             correct_num = np.sum((self.trainingSet.label == evl_result.astype(int)).astype(int))
             if verbose:
-                print('iter ' + str(i) + ' finished with ' + str(correct_num) + '/' + str(train_n) + 'correctness')
+                print('iter ' + str(i) + ' finished with ' + str(correct_num) + '/' + str(train_n) + 'correctness on training set')
             if correct_num < train_n:
                 self.updateWeights(self.trainingSet.input, iter_err)
         if verbose:
