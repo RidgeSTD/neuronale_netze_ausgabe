@@ -47,7 +47,8 @@ class Perceptron(Classifier):
 
         # Initialize the weight vector with small random values
         # around 0 and0.1
-        self.weight = np.random.rand(self.trainingSet.input.shape[1]) / 100
+        self.weight = np.random.rand(self.trainingSet.input.shape[1]) / 10
+        self.bias = np.random.rand(1) / 10
         # TODO add the bias here
 
     def train(self, verbose=True):
@@ -65,8 +66,8 @@ class Perceptron(Classifier):
             evl_result = np.array(self.evaluate(test = self.trainingSet))
             # the following itemwise time can be also replaced from logical and, which maybe faster
             # iter_err = np.logical_and(evl_result, self.trainingSet.label)
-            iter_err = (evl_result.astype(int) != self.trainingSet.label).astype(int)
-            correct_num = train_n - np.sum(iter_err)
+            iter_err = (self.trainingSet.label - evl_result.astype(int)).astype(int)
+            correct_num = np.sum((self.trainingSet.label == evl_result.astype(int)).astype(int))
             if verbose:
                 print('iter ' + str(i) + ' finished with ' + str(correct_num) + '/' + str(train_n) + 'correctness')
             if correct_num < train_n:
@@ -86,7 +87,9 @@ class Perceptron(Classifier):
         bool :
             True if the testInstance is recognized as a 7, False otherwise.
         """
-        return self.fire(testInstance)
+        # here, since the preceptron is too simple, it just output yes or no
+        # instead of 1 vs. n method
+        return self.fire(testInstance) > 0
 
     def evaluate(self, test=None):
         """Evaluate a whole dataset.
