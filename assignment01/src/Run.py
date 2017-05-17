@@ -8,7 +8,7 @@ from report.evaluator import Evaluator
 import numpy as np
 
 def main():
-    data = MNISTSeven("../data/mnist_seven.csv", 150, 50, 50)
+    data = MNISTSeven("../data/mnist_seven.csv", 3000, 1000, 1000)
     myStupidClassifier = StupidRecognizer(data.trainingSet,
                                           data.validationSet,
                                           data.testSet)
